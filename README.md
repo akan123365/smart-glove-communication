@@ -72,6 +72,73 @@ The Smart Glove uses multiple flex sensors and a microcontroller to detect finge
 ---
 
 ## Circuit Diagram
+![1000155854](https://github.com/user-attachments/assets/195bf852-65a6-48f9-834a-04a35c7947a8)
+
 
 
 ## Code
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Set the LCD address
+
+void setup() {
+  Serial.begin(9600);
+  lcd.init();           // Initialize the LCD
+  lcd.backlight();      // Turn on the backlight
+  lcd.setCursor(0, 0);
+  lcd.print("SIGN LANGUAGE");
+  pinMode(13, OUTPUT);  // Set pin 13 as output
+}
+
+void loop() {
+  int s1 = analogRead(A0); // Sensor for "feeling cold"
+  int s2 = analogRead(A1); // Sensor for "I am hungry"
+  int s3 = analogRead(A2); // Sensor for "I need water"
+  int s4 = analogRead(A3); // Sensor for "Emergency"
+
+  Serial.println(s1); Serial.println("feeling cold");
+  Serial.println(s2); Serial.println("I am hungry");
+  Serial.println(s3); Serial.println("I need water");
+  Serial.println(s4); Serial.println("Emergency");
+
+  delay(3000); // Small delay before checking conditions
+
+  if (s1 < 150) {
+    digitalWrite(13, LOW);
+    Serial.println("Feeling cold");
+    lcd.setCursor(0, 1);
+    lcd.print(" Feeling cold  ");
+    delay(2000);
+  }
+
+  if (s2 < 200) {
+    digitalWrite(13, HIGH);
+    Serial.println("I am hungry");
+    lcd.setCursor(0, 1);
+    lcd.print(" I am hungry  ");
+    delay(2000);
+  }
+
+  if (s3 < 150) {
+    digitalWrite(13, LOW);
+    Serial.println("I need water");
+    lcd.setCursor(0, 1);
+    lcd.print(" I need water ");
+    delay(2000);
+  }
+
+  if (s4 < 130) {
+    digitalWrite(13, HIGH);
+    Serial.println("Emergency");
+    lcd.setCursor(0, 1);
+    lcd.print(" Emergency    ");
+    delay(2000);
+  }
+
+  else {
+    Serial.println("NOTHING");
+    lcd.setCursor(0, 1);
+    lcd.print(" NOTHING      ");
+  }
+} 
