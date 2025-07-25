@@ -58,9 +58,6 @@ The Smart Glove uses multiple flex sensors and a microcontroller to detect finge
 
 ---
 
-## System Architecture
----
-
 ##  Working Principle
 
 1. Flex sensors detect the bend in each finger and output analog signals.
